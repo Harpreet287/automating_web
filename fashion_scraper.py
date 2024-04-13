@@ -1,4 +1,6 @@
 import time
+import requests
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -9,7 +11,7 @@ service = Service(executable_path='./chromedriver')
 driver = webdriver.Chrome(service=service)
 
 driver.get("https://wgsn.com/en/blogs")
-
+# driver.get("https://www.colourandtrends.com/")
 link_element = (WebDriverWait(driver, 12)
                 .until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.item-thumb a"))))
 link_element.click()
@@ -31,4 +33,18 @@ for div in divs:
             print(paragraph.text)
         else:
             print(paragraph.text)
+from urllib.request import urlretrieve
+
+# Find the div with class col-xs-12
+image_div = driver.find_element(By.CSS_SELECTOR, "div.col-xs-12")
+
+image = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "source")))
+
+image_url = image.get_attribute("srcset")
+
+response = requests.get(image_url)
+with open("image.jpg", "wb") as file:
+    file.write(response.content)
+
+print("Image saved successfully!")
 driver.quit()
