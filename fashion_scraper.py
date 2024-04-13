@@ -33,12 +33,10 @@ for div in divs:
             print(paragraph.text)
         else:
             print(paragraph.text)
-from urllib.request import urlretrieve
-
-# Find the div with class col-xs-12
 image_div = driver.find_element(By.CSS_SELECTOR, "div.col-xs-12")
 
-image = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "source")))
+image = (WebDriverWait(driver, 10)
+         .until(EC.presence_of_element_located((By.TAG_NAME, "source"))))
 
 image_url = image.get_attribute("srcset")
 
